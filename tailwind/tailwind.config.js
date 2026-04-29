@@ -26,10 +26,21 @@ module.exports = {
           border:  "rgba(255,255,255,0.07)",
           border2: "rgba(255,255,255,0.12)",
         },
+        // Craft 12-17 palette — see design.md.
+        craft: {
+          cream:    "#F5F2E8",
+          charcoal: "#373739",
+          rose:     "#EF5D7A",
+          blush:    "#E59C99",
+          coral:    "#FF7C8B",
+        },
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', ...defaultTheme.fontFamily.serif],
         body:    ['"DM Sans"', ...defaultTheme.fontFamily.sans],
+        // Craft 12-17 type stack.
+        fraunces: ['"Fraunces"', ...defaultTheme.fontFamily.serif],
+        inter:    ['"Inter"', ...defaultTheme.fontFamily.sans],
       },
     },
   },

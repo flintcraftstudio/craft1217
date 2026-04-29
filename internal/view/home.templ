@@ -1,89 +1,145 @@
 package view
 
+// HomePage renders the Craft 12-17 coming-soon page. It deliberately
+// bypasses Base / Nav / Footer — design.md specifies a single-screen,
+// no-scroll composition with no chrome around it.
 templ HomePage() {
-	@Base("Home", "Fast, handcrafted websites built with Go and Tailwind CSS.", homeContent())
+	<!DOCTYPE html>
+	<html lang="en" class="bg-craft-cream text-craft-charcoal">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta name="description" content="Craft 12·17 — a neighborhood cafe arriving in Renton, WA. Sister to Moda Organic Salon &amp; Spa."/>
+			<title>Craft 12·17 · Opening Soon · Renton, WA</title>
+			if GtagID != "" {
+				<script async src={ "https://www.googletagmanager.com/gtag/js?id=" + GtagID }></script>
+				@gtagInit()
+			}
+			if PixelID != "" {
+				@pixelInit()
+				<noscript><img height="1" width="1" style="display:none" src={ "https://www.facebook.com/tr?id=" + PixelID + "&ev=PageView&noscript=1" }/></noscript>
+			}
+			<link rel="stylesheet" href="/static/css/site.css"/>
+			<script src="/static/js/htmx.min.js" defer></script>
+		</head>
+		<body class="min-h-screen bg-craft-cream font-inter text-[14px] font-normal text-craft-charcoal antialiased">
+			@comingSoonPage()
+		</body>
+	</html>
 }
 
-templ homeContent() {
-	<!-- Hero -->
-	<section class="relative overflow-hidden py-24 sm:py-32">
-		<div class="mx-auto max-w-5xl px-6 sm:px-12">
-			<p class="mb-4 text-[11px] font-medium uppercase tracking-[0.2em] text-ff-dusk">Client Name</p>
-			<h1 class="max-w-2xl font-display text-[42px] font-medium leading-tight tracking-tight text-ff-paper sm:text-[68px] sm:leading-[1.05]">
-				A headline that says something&nbsp;memorable.
-			</h1>
-			<p class="mt-6 max-w-xl text-[15px] font-light leading-relaxed text-ff-ash">
-				Replace this with a short paragraph about the client. Keep it to two or three sentences that explain what they do and why visitors should care.
-			</p>
-			<div class="mt-10 flex flex-wrap gap-4">
-				<a href="/contact" class="rounded-sm bg-ff-dusk px-[26px] py-[13px] text-[12px] font-medium uppercase tracking-[0.12em] text-white transition hover:bg-ff-dusk-hover active:scale-[0.98]">
-					Get in touch
-				</a>
-				<a href="#services" class="rounded-sm px-[26px] py-[13px] text-[12px] font-medium uppercase tracking-[0.08em] text-ff-ash transition hover:text-ff-cream">
-					Learn more &gt;
-				</a>
+templ comingSoonPage() {
+	<div class="relative flex min-h-screen flex-col px-6 py-16 sm:px-12 sm:py-14">
+		<!-- Top-left corner label -->
+		<span class="absolute left-6 top-6 text-[11px] uppercase tracking-[0.18em] text-craft-charcoal sm:left-10 sm:top-10">
+			a sister to moda
+		</span>
+		<!-- Top-right corner label -->
+		<span class="absolute right-6 top-6 text-[11px] uppercase tracking-[0.18em] text-craft-charcoal sm:right-10 sm:top-10">
+			renton, wa
+		</span>
+
+		<!-- Wrapper takes remaining vertical space and centers the main
+		     composition. Replaces my-auto on the grid + absolute footer,
+		     so the address footer can never overlap content on a small
+		     viewport — the page scrolls gracefully if it has to. -->
+		<div class="flex flex-1 items-center">
+			<!-- Two-column editorial composition: type stack left, form
+			     right. The single asymmetric move per the design direction.
+			     On mobile it collapses to a single left-aligned column
+			     (type, then form). -->
+			<div class="mx-auto grid w-full max-w-[960px] gap-14 sm:grid-cols-[1.4fr_1fr] sm:items-end sm:gap-20">
+				<!-- Left: editorial type stack, left-aligned -->
+				<div class="flex flex-col items-start text-left">
+					<p class="text-[14px] uppercase tracking-[0.32em] text-craft-charcoal">
+						opening soon
+					</p>
+					<h1 class="mt-4 font-fraunces text-[68px] italic leading-none tracking-[-0.02em] text-craft-charcoal sm:text-[92px]">
+						Craft
+					</h1>
+					<div class="mt-6 flex items-center gap-5">
+						<span class="block h-px w-12 bg-craft-charcoal/40 sm:w-16"></span>
+						<span class="font-fraunces text-[24px] tracking-[0.05em] text-craft-rose">
+							12&middot;17
+						</span>
+						<span class="block h-px w-12 bg-craft-charcoal/40 sm:w-16"></span>
+					</div>
+					<p class="mt-8 max-w-[420px] text-[14px] leading-[1.7] text-craft-charcoal">
+						A neighborhood cafe arriving next door to Moda. Slow coffee, soft mornings, something worth waiting for.
+					</p>
+				</div>
+
+				<!-- Right: form. Pulled to the right edge on desktop;
+				     baseline-aligned with the tagline so the helper text
+				     reads like a foot-of-page reply. -->
+				<div class="w-full max-w-[400px] sm:justify-self-end">
+					@SubscribeForm(SubscribeFormState{})
+				</div>
 			</div>
 		</div>
-		<!-- Subtle radial glow -->
-		<div class="pointer-events-none absolute -right-20 -top-[60px] h-[420px] w-[500px] bg-[radial-gradient(at_65%_30%,#1e2d52_0%,#161a24_55%,transparent_80%)]"></div>
-	</section>
 
-	<!-- Stats -->
-	<section class="border-y border-ff-border">
-		<div class="mx-auto grid max-w-5xl grid-cols-2 divide-x divide-ff-border sm:grid-cols-4">
-			@stat("100%", "Uptime SLA")
-			@stat("< 1s", "Page loads")
-			@stat("0", "WordPress dependencies")
-			@stat("24h", "Support response")
-		</div>
-	</section>
-
-	<!-- Services -->
-	<section id="services" class="py-24 sm:py-[80px]">
-		<div class="mx-auto max-w-5xl px-6 sm:px-12">
-			@eyebrow("What we offer")
-			<h2 class="mb-12 font-display text-[36px] font-medium tracking-tight text-ff-paper sm:text-[52px]">Services</h2>
-			<div class="grid gap-6 sm:grid-cols-3">
-				@serviceCard("Websites", "Fast, responsive marketing sites handcrafted with modern tools. No bloated page builders.")
-				@serviceCard("Development", "Custom software built to solve your specific problems, not shoehorned into a template.")
-				@serviceCard("Support", "Ongoing maintenance, updates, and a real person to call when something needs to change.")
-			</div>
-		</div>
-	</section>
-
-	<!-- CTA -->
-	<section class="relative overflow-hidden border-t border-ff-border">
-		<div class="mx-auto max-w-5xl px-6 py-24 text-center sm:px-12 sm:py-[80px]">
-			<h2 class="font-display text-[36px] font-medium tracking-tight text-ff-paper">Ready to start?</h2>
-			<p class="mx-auto mt-4 max-w-md text-ff-ash">
-				Tell us about your project. We'll get back to you within one business day.
-			</p>
-			<a href="/contact" class="mt-10 inline-block rounded-sm bg-ff-dusk px-[26px] py-[13px] text-[12px] font-medium uppercase tracking-[0.12em] text-white transition hover:bg-ff-dusk-hover active:scale-[0.98]">
-				Start a project
-			</a>
-		</div>
-		<!-- Subtle radial glow -->
-		<div class="pointer-events-none absolute -bottom-20 -left-[60px] h-[380px] w-[480px] bg-[radial-gradient(at_30%_70%,#1e2d52_0%,#161a24_55%,transparent_80%)]"></div>
-	</section>
-}
-
-templ eyebrow(label string) {
-	<div class="mb-6 flex items-center gap-3">
-		<span class="block h-px w-7 bg-ff-dusk"></span>
-		<span class="text-[11px] font-medium uppercase tracking-[0.2em] text-ff-dusk">{ label }</span>
+		<!-- Address footer — natural last child of the flex-column page,
+		     so it sits at the bottom when content fits and at the natural
+		     end of the document when it doesn't. Stays centered as a
+		     tie-down anchor against the asymmetric main composition. -->
+		<p class="text-center text-[11px] uppercase tracking-[0.18em] text-craft-charcoal">
+			5325 NE 4th St &nbsp;&middot;&nbsp; Renton, WA 98059
+		</p>
 	</div>
 }
 
-templ stat(value, label string) {
-	<div class="px-6 py-8 text-center">
-		<p class="font-display text-[22px] font-medium text-ff-paper">{ value }</p>
-		<p class="mt-1 text-[13px] text-ff-ash">{ label }</p>
-	</div>
+// SubscribeFormState carries the data SubscribeForm renders: an
+// optional error to surface inline, and a Success flag the handler
+// flips after a valid submission so htmx swaps in the coral confirmation.
+type SubscribeFormState struct {
+	Email   string
+	Error   string
+	Success bool
 }
 
-templ serviceCard(title, description string) {
-	<div class="rounded border border-ff-border bg-ff-panel p-7 transition hover:border-[#5b7ec452]">
-		<h3 class="mb-2 font-display text-[22px] font-medium text-ff-paper">{ title }</h3>
-		<p class="text-[13px] font-light leading-relaxed text-ff-ash">{ description }</p>
+templ SubscribeForm(s SubscribeFormState) {
+	<div id="subscribe-block">
+		if s.Success {
+			<p class="py-4 text-center text-[14px] tracking-[0.04em] text-craft-coral">
+				thank you &middot; we&rsquo;ll write soon
+			</p>
+		} else {
+			<form
+				hx-post="/subscribe"
+				hx-target="#subscribe-block"
+				hx-swap="outerHTML"
+				hx-disabled-elt="find button"
+				class="subscribe-form"
+				novalidate
+			>
+				<div class="flex w-full items-end gap-3">
+					<label class="flex-1">
+						<span class="sr-only">Email address</span>
+						<input
+							type="email"
+							name="email"
+							value={ s.Email }
+							required
+							autocomplete="email"
+							placeholder="your email"
+							class="peer w-full border-0 border-b border-craft-charcoal/60 bg-transparent px-0 py-3.5 text-[14px] text-craft-charcoal placeholder:text-craft-charcoal/40 focus:border-craft-rose focus:outline-none focus:ring-0 sm:py-2"
+						/>
+					</label>
+					<button
+						type="submit"
+						class="shrink-0 whitespace-nowrap py-3.5 text-[12px] uppercase tracking-[0.18em] text-craft-rose transition hover:text-craft-blush focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-craft-rose disabled:cursor-default sm:py-2"
+					>
+						<span class="label-default">Notify me &rarr;</span>
+						<span class="label-sending">sending&hellip;</span>
+					</button>
+				</div>
+				if s.Error != "" {
+					<p class="mt-3 border-l-2 border-craft-rose pl-3 text-[12px] italic text-craft-charcoal">{ s.Error }</p>
+				}
+				<p class="mt-3 text-[11px] uppercase tracking-[0.18em] text-craft-charcoal/60">
+					be the first to know when our doors open
+				</p>
+			</form>
+		}
 	</div>
 }

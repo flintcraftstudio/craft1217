@@ -119,6 +119,7 @@ func main() {
 		Turnstile: turnstileVerifier,
 		AppName:   cfg.AppName,
 	}))
+	mux.Handle("POST /subscribe", handler.Subscribe(st))
 
 	// Auth.
 	authDeps := handler.AuthDeps{

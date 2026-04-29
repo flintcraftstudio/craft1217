@@ -44,6 +44,13 @@ templ gtagInit() {
 	</script>
 }
 
+templ eyebrow(label string) {
+	<div class="mb-6 flex items-center gap-3">
+		<span class="block h-px w-7 bg-ff-dusk"></span>
+		<span class="text-[11px] font-medium uppercase tracking-[0.2em] text-ff-dusk">{ label }</span>
+	</div>
+}
+
 templ pixelInit() {
 	<script>
 		!function(f,b,e,v,n,t,s)
