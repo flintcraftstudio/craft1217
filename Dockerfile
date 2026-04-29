@@ -9,7 +9,7 @@ COPY . .
 RUN apk add --no-cache curl && \
     curl -sL https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.17/tailwindcss-linux-x64 -o /usr/local/bin/tailwindcss && \
     chmod +x /usr/local/bin/tailwindcss && \
-    tailwindcss -i tailwind/input.css -o web/static/css/site.css --minify
+    tailwindcss -c tailwind/tailwind.config.js -i tailwind/input.css -o web/static/css/site.css --minify
 
 # Generate templ and build Go binary
 RUN go install github.com/a-h/templ/cmd/templ@latest && \
