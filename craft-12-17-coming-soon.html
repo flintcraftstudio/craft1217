@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Craft 12-17 — Opening Soon</title>
+  <meta name="description" content="A neighborhood cafe arriving next door to Moda Organic Salon & Spa in Renton, WA. Opening soon." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --cream: #FAF7EE;
+      --charcoal: #373739;
+      --rose: #EF5D7A;
+      --blush: #E59C99;
+      --coral: #FF7C8B;
+      --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; min-height: 100vh; }
+
+    body {
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: var(--sans);
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .petal-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .corner {
+      position: absolute;
+      top: 1.5rem;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--charcoal);
+      text-transform: uppercase;
+      z-index: 3;
+    }
+    .corner--left  { left: 2rem; }
+    .corner--right { right: 2rem; }
+
+    .floral { width: 32px; height: 32px; margin-bottom: 2.5rem; opacity: 0.85; }
+
+    .eyebrow {
+      font-size: 14px;
+      letter-spacing: 0.32em;
+      color: var(--charcoal);
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .wordmark {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(64px, 12vw, 92px);
+      font-weight: 400;
+      color: var(--charcoal);
+      margin: 0;
+      letter-spacing: -0.02em;
+      line-height: 0.95;
+    }
+
+    .date { display: flex; align-items: center; gap: 14px; margin: 0.5rem 0 2rem; }
+    .date__rule { width: 28px; height: 0.5px; background: var(--charcoal); display: inline-block; }
+    .date__numerals {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--rose);
+      letter-spacing: 0.05em;
+    }
+
+    .tagline {
+      max-width: 380px;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--charcoal);
+      margin: 0 0 2rem;
+    }
+
+    .form { width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; }
+
+    .form__field {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      border-bottom: 0.5px solid var(--charcoal);
+      padding-bottom: 8px;
+      transition: border-color 200ms ease;
+    }
+    .form__field:focus-within { border-bottom-color: var(--rose); }
+
+    .form__input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--charcoal);
+      padding: 6px 0;
+      outline: none;
+    }
+    .form__input::placeholder { color: var(--charcoal); opacity: 0.5; }
+
+    .form__submit {
+      background: transparent;
+      border: none;
+      font-family: var(--sans);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: var(--rose);
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 6px 0;
+      transition: color 200ms ease;
+    }
+    .form__submit:hover, .form__submit:focus-visible { color: var(--blush); }
+    .form__submit:focus-visible { outline: 2px solid var(--rose); outline-offset: 4px; }
+
+    .form__helper {
+      margin-top: 0.75rem;
+      font-size: 11px;
+      color: var(--charcoal);
+      opacity: 0.6;
+      align-self: flex-start;
+    }
+
+    .form__success {
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--coral);
+      letter-spacing: 0.04em;
+      padding: 1rem 0;
+    }
+    .form__success[hidden] { display: none; }
+
+    .footer {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--charcoal);
+      opacity: 0.7;
+      z-index: 3;
+    }
+
+    @media (max-width: 480px) {
+      .page { padding: 5rem 1.5rem 4rem; }
+      .corner { font-size: 10px; }
+      .corner--left  { left: 1.25rem; }
+      .corner--right { right: 1.25rem; }
+      .footer { font-size: 10px; padding: 0 1.25rem; }
+    }
+
+    /* === Petal system === */
+
+    .petal {
+      position: absolute;
+      top: 0;
+      width: 22px;
+      height: 16px;
+      will-change: transform, opacity;
+      pointer-events: none;
+    }
+
+    .petal--falling {
+      animation: petalFall var(--fall-duration) linear var(--fall-delay) 1 forwards;
+    }
+    .petal--falling .petal__inner {
+      animation: petalSway var(--sway-duration) ease-in-out var(--fall-delay) infinite;
+    }
+
+    .petal--rest {
+      opacity: var(--target-opacity);
+    }
+
+    .petal__inner { width: 100%; height: 100%; }
+    .petal svg { width: 100%; height: 100%; display: block; }
+
+    @keyframes petalFall {
+      0%   { transform: translate3d(0, -10vh, 0) rotate(var(--start-rot)); opacity: 0; }
+      8%   { opacity: var(--target-opacity); }
+      92%  { opacity: var(--target-opacity); }
+      100% { transform: translate3d(var(--drift-x), 110vh, 0) rotate(var(--end-rot)); opacity: 0; }
+    }
+
+    @keyframes petalSway {
+      0%, 100% { margin-left: calc(var(--sway) * -1); }
+      50%      { margin-left: var(--sway); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .petal--falling { animation: none; opacity: 0 !important; }
+      .petal--falling .petal__inner { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="petal-field" id="petal-field" aria-hidden="true"></div>
+
+  <span class="corner corner--left">a sister to moda</span>
+  <span class="corner corner--right">renton, wa</span>
+
+  <main class="page">
+
+    <svg class="floral" viewBox="0 0 32 32" aria-hidden="true">
+      <g fill="none" stroke="#EF5D7A" stroke-width="1" stroke-linecap="round">
+        <path d="M16 8 C 13 10, 13 14, 16 16 C 19 14, 19 10, 16 8 Z" fill="#E59C99" fill-opacity="0.4"/>
+        <path d="M16 16 C 12 17, 11 21, 14 23 C 17 22, 18 19, 16 16 Z" fill="#E59C99" fill-opacity="0.4"/>
+        <path d="M16 16 C 20 17, 21 21, 18 23 C 15 22, 14 19, 16 16 Z" fill="#E59C99" fill-opacity="0.4"/>
+        <path d="M16 24 L 16 30" stroke-width="0.75"/>
+      </g>
+    </svg>
+
+    <p class="eyebrow">opening soon</p>
+
+    <h1 class="wordmark">Craft</h1>
+
+    <div class="date" aria-label="December 17">
+      <span class="date__rule" aria-hidden="true"></span>
+      <span class="date__numerals">12&middot;17</span>
+      <span class="date__rule" aria-hidden="true"></span>
+    </div>
+
+    <p class="tagline">A neighborhood cafe arriving next door to Moda. Slow coffee, soft mornings, something worth waiting for.</p>
+
+    <form class="form" id="signup-form" novalidate>
+      <label for="email" hidden>Email address</label>
+      <div class="form__field">
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form__input"
+          placeholder="your email"
+          required
+          autocomplete="email"
+        />
+        <button type="submit" class="form__submit">Notify me &rarr;</button>
+      </div>
+      <p class="form__helper">be the first to know when our doors open</p>
+    </form>
+
+    <p class="form__success" id="signup-success" hidden>thank you &middot; we'll write soon.</p>
+
+  </main>
+
+  <footer class="footer">5325 ne 4th street &middot; renton, wa 98059</footer>
+
+  <script>
+    /* === Petal system ===
+     * First-load fall + ground-rest + submission burst.
+     * - Intro fall: ~10 petals (6 on mobile) cascade in over 0–10s.
+     * - Ground rest: 5 static petals (10 in reduced-motion) live in lower third.
+     * - Submission burst: ~18 petals (10 on mobile) on form submit.
+     * Color distribution: 70% blush, 20% rose, 10% coral.
+     */
+    (function () {
+      const field = document.getElementById('petal-field');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const mobile = window.matchMedia('(max-width: 480px)').matches;
+
+      const COLOR_BLUSH = '#E59C99';
+      const COLOR_ROSE  = '#EF5D7A';
+      const COLOR_CORAL = '#FF7C8B';
+
+      function pickColor() {
+        const r = Math.random();
+        if (r < 0.70) return COLOR_BLUSH;
+        if (r < 0.90) return COLOR_ROSE;
+        return COLOR_CORAL;
+      }
+
+      function rand(min, max) { return Math.random() * (max - min) + min; }
+
+      function petalSVG(color) {
+        return '<svg viewBox="0 0 22 16" xmlns="http://www.w3.org/2000/svg">' +
+               '<path d="M2 8 C 2 3, 9 0, 16 2 C 21 4, 22 9, 18 13 C 12 16, 4 14, 2 8 Z" fill="' + color + '"/>' +
+               '<path d="M5 7 C 9 5, 14 5, 17 7" stroke="' + color + '" stroke-width="0.4" fill="none" opacity="0.5"/>' +
+               '</svg>';
+      }
+
+      function buildPetal() {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'petal';
+        const inner = document.createElement('div');
+        inner.className = 'petal__inner';
+        inner.innerHTML = petalSVG(pickColor());
+        wrapper.appendChild(inner);
+        return wrapper;
+      }
+
+      function spawnFallingPetal(opts) {
+        opts = opts || {};
+        const p = buildPetal();
+        p.classList.add('petal--falling');
+
+        const startX     = rand(0, 100);
+        const driftX     = rand(-80, 80);
+        const sway       = rand(20, 50);
+        const startRot   = rand(0, 360);
+        const endRot     = startRot + rand(180, 540) * (Math.random() < 0.5 ? -1 : 1);
+        const fallDur    = opts.fast ? rand(6, 10) : rand(14, 22);
+        const swayDur    = rand(4, 7);
+        const delay      = opts.delay !== undefined ? opts.delay : 0;
+        const opacity    = opts.fast ? rand(0.6, 0.9) : rand(0.45, 0.75);
+        const scale      = opts.fast ? rand(0.85, 1.3) : rand(0.7, 1.2);
+
+        p.style.left = startX + 'vw';
+        p.style.transform = 'scale(' + scale + ')';
+        p.style.setProperty('--start-rot', startRot + 'deg');
+        p.style.setProperty('--end-rot', endRot + 'deg');
+        p.style.setProperty('--drift-x', driftX + 'px');
+        p.style.setProperty('--sway', sway + 'px');
+        p.style.setProperty('--fall-duration', fallDur + 's');
+        p.style.setProperty('--sway-duration', swayDur + 's');
+        p.style.setProperty('--fall-delay', delay + 's');
+        p.style.setProperty('--target-opacity', opacity);
+
+        field.appendChild(p);
+
+        const lifetime = (delay + fallDur + 0.5) * 1000;
+        setTimeout(function () { p.remove(); }, lifetime);
+      }
+
+      function spawnRestPetal() {
+        const p = buildPetal();
+        p.classList.add('petal--rest');
+
+        const x       = rand(2, 92);
+        const y       = rand(60, 92);
+        const rot     = rand(0, 360);
+        const scale   = rand(0.7, 1.2);
+        const opacity = rand(0.45, 0.7);
+
+        p.style.left = x + 'vw';
+        p.style.top  = y + 'vh';
+        p.style.transform = 'rotate(' + rot + 'deg) scale(' + scale + ')';
+        p.style.setProperty('--target-opacity', opacity);
+        p.style.opacity = opacity;
+
+        field.appendChild(p);
+      }
+
+      const restCount = reduced ? 10 : 5;
+      for (let i = 0; i < restCount; i++) spawnRestPetal();
+
+      if (!reduced) {
+        const introCount = mobile ? 6 : 10;
+        for (let i = 0; i < introCount; i++) {
+          spawnFallingPetal({ delay: rand(0, 8) });
+        }
+      }
+
+      const form    = document.getElementById('signup-form');
+      const success = document.getElementById('signup-success');
+
+      function celebrate() {
+        if (reduced) return;
+        const burstCount = mobile ? 10 : 18;
+        for (let i = 0; i < burstCount; i++) {
+          spawnFallingPetal({ fast: true, delay: rand(0, 1) });
+        }
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        if (!email || !email.includes('@')) {
+          document.getElementById('email').focus();
+          return;
+        }
+        celebrate();
+        form.hidden = true;
+        success.hidden = false;
+      });
+    })();
+  </script>
+
+</body>
+</html>

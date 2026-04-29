@@ -53,3 +53,49 @@
     }
   }
 }
+
+/* === Craft 12-17 petal field ===
+   Showstopper animation for the coming-soon page. Lives in
+   #petal-field, populated by /static/js/petals.js. CSS owns the
+   keyframes; JS only spawns elements and sets the per-petal CSS
+   variables. See craft-12-17-design-decisions.md "Showstopper". */
+
+.petal {
+  position: absolute;
+  top: 0;
+  width: 22px;
+  height: 22px;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* fill-mode: both — the 0% keyframe (translate -10vh, opacity 0)
+   applies during the staggered fall-delay, so a petal stays parked
+   above the viewport invisibly until its turn to fall. Without
+   this, the petal sits at top:0 visible during the delay. */
+.petal--falling {
+  animation: petalFall var(--fall-duration) linear var(--fall-delay) 1 both;
+}
+.petal--falling .petal__inner {
+  animation: petalSway var(--sway-duration) ease-in-out var(--fall-delay) infinite;
+}
+
+.petal__inner { width: 100%; height: 100%; }
+.petal svg { width: 100%; height: 100%; display: block; }
+
+@keyframes petalFall {
+  0%   { transform: translate3d(0, -10vh, 0) rotate(var(--start-rot)); opacity: 0; }
+  8%   { opacity: var(--target-opacity); }
+  92%  { opacity: var(--target-opacity); }
+  100% { transform: translate3d(var(--drift-x), 110vh, 0) rotate(var(--end-rot)); opacity: 0; }
+}
+
+@keyframes petalSway {
+  0%, 100% { margin-left: calc(var(--sway) * -1); }
+  50%      { margin-left: var(--sway); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .petal--falling { animation: none; opacity: 0 !important; }
+  .petal--falling .petal__inner { animation: none; }
+}
